@@ -4,7 +4,8 @@ endif
 
 .PHONY: install
 install:
-	install -d $(DESTDIR)$(PREFIX)/bin/
+	install -d $(DESTDIR)$(PREFIX)/bin
+	install -d $(DESTDIR)/etc
 	install -d $(DESTDIR)$(PREFIX)/share/themes/Clearine-Fallback/clearine
 	sh data/genconfig
 	install -m 644 data/clearine.conf $(DESTDIR)/etc/

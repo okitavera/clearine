@@ -280,6 +280,11 @@ class Clearine(Gtk.Window):
         button.override_color(Gtk.StateFlags.NORMAL, self.to_rgba(config["button-font-color"]))
         button.override_font(Pango.FontDescription(config["button-font"]))
 
+        button_style = ".clearine-button{border-width:0;border-style:none}"
+        cssprovider = Gtk.CssProvider()
+        cssprovider.load_from_data(button_style.encode())
+        Gtk.StyleContext.add_class(button.get_style_context(), "clearine-button")
+        Gtk.StyleContext.add_provider(button.get_style_context(), cssprovider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         widget.pack_start(button, False, False, False)
 
     def to_rgba(self, hex):
