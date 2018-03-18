@@ -101,6 +101,10 @@ You can use the png or svg for the icon button
 See `/usr/share/themes/Clearine-Fallback` for example
 
 
+## Thanks
+
+* [@fikriomar26](https://github.com/fikriomar16) for the 768px screen configs.
+
 ## License
 
 The code is available under the [MIT license](LICENSE).
