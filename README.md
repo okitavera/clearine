@@ -101,8 +101,9 @@ You can use the png or svg for the icon button
 See `/usr/share/themes/Clearine-Fallback` for example
 
 
-## Thanks
+## Credits
 
+* [Google Material Design Icon Family](https://google.github.io/material-design-icons/)
 * [@fikriomar26](https://github.com/fikriomar16) for the 768px screen configs.
 
 ## License
