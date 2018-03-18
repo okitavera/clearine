@@ -15,10 +15,15 @@
 
 ## Installation
 
-install the dependencies first:
+For Arch user, you can install it via AUR insteads:
 
-#### Arch Linux
-    $ sudo pacman -S python-{cairo, gobject}
+    $ yaourt -S clearine-git
+
+---
+
+Install the dependencies first:
+
+    $ sudo pacman -S python-cairo python-gobject # Arch Linux
 
 clone this repo into your local storage:
 
