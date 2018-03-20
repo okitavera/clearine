@@ -90,10 +90,10 @@ The configuration format is using section-style like this :
      font-color = #e1e5e8
      # set widget first line font and format text
      firstline-font = DejaVu Sans ExtraLight 90
-     firstline-format = %%H.%%M
+     firstline-format = %H.%M
      # set widget second line font and format text
      secondline-font = DejaVu Sans Book 14
-     secondline-format = %%A, %%d %%B %%Y
+     secondline-format = %A, %d %B %Y
 
 ## Themes
 

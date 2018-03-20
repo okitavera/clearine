@@ -31,6 +31,6 @@ spacing = 10
 [widget]
 font-color = #e1e5e8
 firstline-font = DejaVu Sans ExtraLight 90
-firstline-format = %%H.%%M
+firstline-format = %H.%M
 secondline-font = DejaVu Sans Book 14
-secondline-format = %%A, %%d %%B %%Y
+secondline-format = %A, %d %B %Y

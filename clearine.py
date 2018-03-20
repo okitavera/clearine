@@ -59,10 +59,10 @@ usage:
      font-color = #e1e5e8
      # set widget first line font and format text
      firstline-font = DejaVu Sans ExtraLight 90
-     firstline-format = %%H.%%M
+     firstline-format = %H.%M
      # set widget second line font and format text
      secondline-font = DejaVu Sans Book 14
-     secondline-format = %%A, %%d %%B %%Y
+     secondline-format = %A, %d %B %Y
 
 author  - Nanda Vera <codeharuka.yusa@gmail.com> 
 source  - https://github.com/yuune/clearine
@@ -140,7 +140,7 @@ class Clearine(Gtk.Window):
                 if data is "arr":
                     return dotcat.get(section, key).split(",")
                 if data is "str":
-                    return dotcat.get(section, key)
+                    return dotcat.get(section, key, raw=True)
                 if data is "int":
                     return dotcat.getint(section, key)
                 if data is "flo":
