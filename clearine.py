@@ -145,12 +145,20 @@ class Clearine(Gtk.Window):
                     return dotcat.getint(section, key)
                 if data is "flo":
                     return dotcat.getfloat(section, key)
+                if data is "clr":
+                    data = dotcat.get(section, key, raw=True)
+                    if data.startswith("#"):
+                        return data
+                    elif data.startswith("{") and data.endswith("}"):
+                        data = data.lstrip('{').rstrip('}')
+                        return self.xrdb(data)
+
             except:
                 status.info("failed to find key named '%s' in section '[%s]'.  use fallback value insteads." % (key, section))
                 return default
 
         config["button-font"]              = find_key("str", "button", "font",              "DejaVu Sans Book 9")
-        config["button-font-color"]        = find_key("str", "button", "font-color",        "#101314")
+        config["button-font-color"]        = find_key("clr", "button", "font-color",        "#101314")
         config["button-height"]            = find_key("int", "button", "height",            70)
         config["button-icon-height"]       = find_key("int", "button", "icon-height",       32)
         config["button-icon-width"]        = find_key("int", "button", "icon-width",        32)
@@ -162,14 +170,14 @@ class Clearine(Gtk.Window):
         config["button-spacing"]           = find_key("int", "button", "spacing",           10)
         config["button-theme"]             = find_key("str", "button", "theme",             "default-clearine")
         config["button-width"]             = find_key("int", "button", "width",             100)
-        config["card-background-color"]    = find_key("str", "card",   "background-color",  "#e1e5e8")
+        config["card-background-color"]    = find_key("clr", "card",   "background-color",  "#e1e5e8")
         config["card-border-radius"]       = find_key("int", "card",   "border-radius",     20)
         config["main-gap-left"]            = find_key("int", "main",   "gap-left",          100)
         config["main-gap-right"]           = find_key("int", "main",   "gap-right",         50)
         config["main-opacity"]             = find_key("flo", "main",   "opacity",           0.8)
         config["widget-firstline-font"]    = find_key("str", "widget", "firstline-font",    "DejaVu Sans ExtraLight 90")
         config["widget-firstline-format"]  = find_key("str", "widget", "firstline-format",  "%H.%M")
-        config["widget-font-color"]        = find_key("str", "widget", "font-color",        "#e1e5e8")
+        config["widget-font-color"]        = find_key("clr", "widget", "font-color",        "#e1e5e8")
         config["widget-secondline-font"]   = find_key("str", "widget", "secondline-font",   "DejaVu Sans Book 14")
         config["widget-secondline-format"] = find_key("str", "widget", "secondline-format", "%A, %d %B %Y")
         config["command-logout"]           = find_key("str", "command", "logout",           "pkexec pkill X")
@@ -292,6 +300,18 @@ class Clearine(Gtk.Window):
         color = Gdk.RGBA()
         color.parse(hex)
         return color 
+
+    def xrdb(self, request):
+        result = {}
+        query = subprocess.Popen(['xrdb', '-query'],stdout=subprocess.PIPE)
+        for line in iter(query.stdout.readline, b''):
+            lined = line.decode()
+            key, value, *_ = lined.split(':')
+            key = key.lstrip('*').lstrip('.')
+            value = value.strip()
+            result[key] = value
+
+        return result[request]
 
     def draw_background(self, widget, context):
         # setup a semi-transparent background

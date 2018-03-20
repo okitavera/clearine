@@ -95,6 +95,23 @@ The configuration format is using section-style like this :
      secondline-font = DejaVu Sans Book 14
      secondline-format = %A, %d %B %Y
 
+For the color, you can use hex format like this :
+
+     [card]
+     background-color = #e1e5e8
+     
+     [widget]
+     font-color = #e1e5e8
+
+Also you can get color from your X resources, by using format like this:
+
+     [card]
+     background-color = {background}
+     
+     [widget]
+     font-color = {color6}
+
+
 ## Themes
 
 You can use the png or svg for the icon button
