@@ -19,6 +19,10 @@ For Arch user, you can install it via AUR insteads:
 
     $ yaourt -S clearine-git
 
+For Void user :
+
+    $ xbps-install -S clearine
+
 ---
 
 Install the dependencies first:
