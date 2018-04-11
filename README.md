@@ -21,7 +21,7 @@ For Arch user, you can install it via AUR insteads:
 
 For Void user :
 
-    $ xbps-install -S clearine
+    $ sudo xbps-install -S clearine
 
 ---
 
