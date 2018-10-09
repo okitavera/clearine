@@ -1,7 +1,12 @@
 #!/bin/sh
-height=$(xrandr | grep ' connected' | awk '{print $4}' | sed -e 's/^\(.*\)x\(.*\)+\(.*\)+\(.*\)/\2/g')
 
-if [[ $height == "1080" ]]; then
+# use grep -v '[^0-9]' to strip non-numbers
+height=$(xrandr | grep ' connected' | awk '{print $4}' | sed -e 's/^\(.*\)x\(.*\)+\(.*\)+\(.*\)/\2/g' | grep -v '[^0-9]')
+
+# shorter and still POSIX compliant
+# height=$(xrandr | grep ' connected' | awk '{print $4}' | awk -F'x' '{print $1}' | grep -o '[0-9]*')
+
+if (( height == 1080 )); then
 	cp -f $(dirname $0)/config-1080 $(dirname $0)/clearine.conf
 else
 	cp -f $(dirname $0)/config-768 $(dirname $0)/clearine.conf
