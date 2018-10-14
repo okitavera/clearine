@@ -73,8 +73,9 @@ The configuration format is using section-style like this :
      # button item sort
      items = logout, restart, shutdown, cancel
      # set button text font and text color
-     font = DejaVu Sans Book 9
-     font-color = #101314
+     label-font = DejaVu Sans Book 9
+     label-size = 9
+     label-color = #101314
      # set button width and height
      width = 100
      height = 70
@@ -90,30 +91,29 @@ The configuration format is using section-style like this :
      spacing = 10
      
      [widget]
-     # set widget font color
-     font-color = #e1e5e8
-     # set widget first line font and format text
-     firstline-font = DejaVu Sans ExtraLight 90
+     # set widget first line font, size, color and format
+     firstline-font = DejaVu Sans ExtraLight
+     firstline-size = 90
+     firstline-color = #e1e5e8
      firstline-format = %H.%M
-     # set widget second line font and format text
-     secondline-font = DejaVu Sans Book 14
+     # set widget second line font, size, color and format
+     secondline-font = DejaVu Sans Book
+     secondline-size = 14
+     secondline-color = #e1e5e8
      secondline-format = %A, %d %B %Y
 
 For the color, you can use hex format like this :
 
      [card]
      background-color = #e1e5e8
-     
-     [widget]
-     font-color = #e1e5e8
 
-Also you can get color from your X resources, by using format like this:
+or you can get color from your X resources, by using format like this:
 
      [card]
      background-color = {background}
      
      [widget]
-     font-color = {color6}
+     firstline-color = {color6}
 
 
 ## Themes
