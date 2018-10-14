@@ -38,8 +38,9 @@ usage:
      # button item sort
      items = logout, restart, shutdown, cancel
      # set button text font and text color
-     font = DejaVu Sans Book 9
-     font-color = #101314
+     label-font = DejaVu Sans Book 9
+     label-size = 9
+     label-color = #101314
      # set button width and height
      width = 100
      height = 70
@@ -55,13 +56,15 @@ usage:
      spacing = 10
 
    [widget]
-     # set widget font color
-     font-color = #e1e5e8
-     # set widget first line font and format text
-     firstline-font = DejaVu Sans ExtraLight 90
+     # set widget first line font, size, color and format
+     firstline-font = DejaVu Sans ExtraLight
+     firstline-size = 90
+     firstline-color = #e1e5e8
      firstline-format = %H.%M
-     # set widget second line font and format text
-     secondline-font = DejaVu Sans Book 14
+     # set widget second line font, size, color and format
+     secondline-font = DejaVu Sans Book
+     secondline-size = 14
+     secondline-color = #e1e5e8
      secondline-format = %A, %d %B %Y
 
 author  - Nanda Vera <codeharuka.yusa@gmail.com> 
@@ -157,8 +160,9 @@ class Clearine(Gtk.Window):
                 status.info("failed to find key named '%s' in section '[%s]'.  use fallback value insteads." % (key, section))
                 return default
 
-        config["button-font"]              = find_key("str", "button", "font",              "DejaVu Sans Book 9")
-        config["button-font-color"]        = find_key("clr", "button", "font-color",        "#101314")
+        config["button-label-font"]        = find_key("str", "button", "label-font",        "DejaVu Sans Book")
+        config["button-label-size"]        = find_key("int", "button", "label-size",        9)
+        config["button-label-color"]       = find_key("clr", "button", "label-color",       "#101314")
         config["button-height"]            = find_key("int", "button", "height",            70)
         config["button-icon-height"]       = find_key("int", "button", "icon-height",       32)
         config["button-icon-width"]        = find_key("int", "button", "icon-width",        32)
@@ -175,10 +179,13 @@ class Clearine(Gtk.Window):
         config["main-gap-left"]            = find_key("int", "main",   "gap-left",          100)
         config["main-gap-right"]           = find_key("int", "main",   "gap-right",         50)
         config["main-opacity"]             = find_key("flo", "main",   "opacity",           0.8)
-        config["widget-firstline-font"]    = find_key("str", "widget", "firstline-font",    "DejaVu Sans ExtraLight 90")
+        config["widget-firstline-font"]    = find_key("str", "widget", "firstline-font",    "DejaVu Sans ExtraLight")
+        config["widget-firstline-size"]    = find_key("int", "widget", "firstline-size",    90)
+        config["widget-firstline-color"]   = find_key("clr", "widget", "firstline-color",   "#e1e5e8")
         config["widget-firstline-format"]  = find_key("str", "widget", "firstline-format",  "%H.%M")
-        config["widget-font-color"]        = find_key("clr", "widget", "font-color",        "#e1e5e8")
-        config["widget-secondline-font"]   = find_key("str", "widget", "secondline-font",   "DejaVu Sans Book 14")
+        config["widget-secondline-font"]   = find_key("str", "widget", "secondline-font",   "DejaVu Sans Book")
+        config["widget-secondline-size"]   = find_key("int", "widget", "secondline-size",    14)
+        config["widget-secondline-color"]  = find_key("clr", "widget", "secondline-color",  "#e1e5e8")
         config["widget-secondline-format"] = find_key("str", "widget", "secondline-format", "%A, %d %B %Y")
         config["command-logout"]           = find_key("str", "command", "logout",           "pkexec pkill X")
         config["command-restart"]          = find_key("str", "command", "restart",          "pkexec reboot -h now")
@@ -188,13 +195,12 @@ class Clearine(Gtk.Window):
         # Setup all content inside Gtk.Window
         button_group = Gtk.VBox()
         button_group.set_margin_top(config["button-margin-top"])
-        button_group.set_margin_left(config["button-margin-left"])
+        button_group.set_margin_start(config["button-margin-left"])
         button_group.set_margin_bottom(config["button-margin-bottom"])
-        button_group.set_margin_right(config["button-margin-right"])
+        button_group.set_margin_end(config["button-margin-right"])
         button_group.set_spacing(config["button-spacing"])
 
         card = Gtk.VBox()
-        card.override_background_color(Gtk.StateFlags.NORMAL, self.to_rgba(config["card-background-color"]))
         card.pack_end(button_group, False, False, False)
 
         container = Gtk.Grid()
@@ -204,13 +210,9 @@ class Clearine(Gtk.Window):
 
         self.first_widget = Gtk.Label()
         self.first_widget.set_label(time.strftime(config["widget-firstline-format"]))
-        self.first_widget.override_color(Gtk.StateFlags.NORMAL, self.to_rgba(config["widget-font-color"]))
-        self.first_widget.override_font(Pango.FontDescription(config["widget-firstline-font"]));
 
         self.second_widget = Gtk.Label()
         self.second_widget.set_label(time.strftime(config["widget-secondline-format"]))
-        self.second_widget.override_color(Gtk.StateFlags.NORMAL, self.to_rgba(config["widget-font-color"]))
-        self.second_widget.override_font(Pango.FontDescription(config["widget-secondline-font"]))
 
         widgets = Gtk.Grid()
         widgets.set_valign(Gtk.Align.CENTER)
@@ -218,19 +220,59 @@ class Clearine(Gtk.Window):
         widgets.attach(self.second_widget, 1, 2, 1, 1)
 
         content = Gtk.Box()
-        content.set_margin_left(config["main-gap-left"])
-        content.set_margin_right(config["main-gap-right"])
+        content.set_margin_start(config["main-gap-left"])
+        content.set_margin_end(config["main-gap-right"])
         content.pack_start(widgets, False, False, False)
         content.pack_end(container, False, False, False)
 
         gobject.timeout_add(200, self.update_widgets)
+        self.card_style = Gtk.CssProvider()
+        self.card_css = """
+            .clearine-button {{
+                background: {_cbg};
+                color: {_bcol};
+                font-family: '{_bfont}';
+                font-size: {_bsize}px;
+                box-shadow: none;
+            }}
+            .clearine-card {{
+                background: {_cbg};
+                border-width:0;
+                border-radius:{_crad}px;
+            }}
+            .clearine-widget-first {{
+                color: {_w1col};
+                font-family:'{_w1font}';
+                font-size: {_w1size}px;
+            }}
+            .clearine-widget-second {{
+                color: {_w2col};
+                font-family:'{_w2font}';
+                font-size: {_w2size}px;
+            }}
+            """.format(
+                _bsize=str(config["button-label-size"]),
+                _bcol=str(config["button-label-color"]),
+                _bfont=str(config["button-label-font"]),
+                _cbg=str(config["card-background-color"]),
+                _crad=str(config["card-border-radius"]),
+                _w1col=str(config["widget-firstline-color"]),
+                _w2col=str(config["widget-secondline-color"]),
+                _w1font=str(config["widget-firstline-font"]),
+                _w2font=str(config["widget-secondline-font"]),
+                _w1size=str(config["widget-firstline-size"]),
+                _w2size=str(config["widget-secondline-size"]),
+            )
 
+        self.card_style.load_from_data(self.card_css.encode())
 
-        card_rounded = Gtk.CssProvider()
-        card_style = ".clearine-card{border-width:0;border-radius:%spx}" % str(config["card-border-radius"])
-        card_rounded.load_from_data(card_style.encode())
         Gtk.StyleContext.add_class(card.get_style_context(), "clearine-card")
-        Gtk.StyleContext.add_provider(card.get_style_context(), card_rounded, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        Gtk.StyleContext.add_class(self.first_widget.get_style_context(), "clearine-widget-first")
+        Gtk.StyleContext.add_class(self.second_widget.get_style_context(), "clearine-widget-second")
+
+        Gtk.StyleContext.add_provider(card.get_style_context(), self.card_style, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        Gtk.StyleContext.add_provider(self.first_widget.get_style_context(), self.card_style, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        Gtk.StyleContext.add_provider(self.second_widget.get_style_context(), self.card_style, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         for button in config["button-items"]:
             try:
@@ -284,15 +326,9 @@ class Clearine(Gtk.Window):
         button.connect("clicked", self.do, button_name)
         button.set_size_request(config["button-width"], config["button-height"])
         button.set_can_focus(True)
-        button.override_background_color(Gtk.StateFlags.NORMAL, self.to_rgba(config["card-background-color"]))
-        button.override_color(Gtk.StateFlags.NORMAL, self.to_rgba(config["button-font-color"]))
-        button.override_font(Pango.FontDescription(config["button-font"]))
 
-        button_style = ".clearine-button{border-width:0;border-style:none}"
-        cssprovider = Gtk.CssProvider()
-        cssprovider.load_from_data(button_style.encode())
         Gtk.StyleContext.add_class(button.get_style_context(), "clearine-button")
-        Gtk.StyleContext.add_provider(button.get_style_context(), cssprovider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        Gtk.StyleContext.add_provider(button.get_style_context(), self.card_style, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         widget.pack_start(button, False, False, False)
 
     def to_rgba(self, hex):
