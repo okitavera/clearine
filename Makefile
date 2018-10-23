@@ -15,5 +15,5 @@ install:
 .PHONY: uninstall
 uninstall:
 	test -e $(DESTDIR)$(PREFIX)/bin/clearine && rm $(DESTDIR)$(PREFIX)/bin/clearine || exit 0
-	test -d $(DESTDIR)$(PREFIX)/share/themes/default-clearine/Clearine-Fallback && rm -rf $(DESTDIR)$(PREFIX)/share/themes/Clearine-Fallback || exit 0
+	test -d $(DESTDIR)$(PREFIX)/share/themes/Clearine-Fallback && rm -rf $(DESTDIR)$(PREFIX)/share/themes/Clearine-Fallback || exit 0
 	test -d $(DESTDIR)/etc/clearine.conf && rm $(DESTDIR)/etc/clearine.conf || exit 0

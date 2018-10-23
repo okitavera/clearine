@@ -98,7 +98,7 @@ except:
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 
-from gi.repository import Gtk, Gdk, Pango, GObject as gobject
+from gi.repository import Gtk, Gdk, Pango, GLib
 from gi.repository.GdkPixbuf import Pixbuf
 
 config = {}
@@ -172,7 +172,7 @@ class Clearine(Gtk.Window):
         config["button-margin-right"]      = find_key("int", "button", "margin-right",      10)
         config["button-margin-top"]        = find_key("int", "button", "margin-top",        30)
         config["button-spacing"]           = find_key("int", "button", "spacing",           10)
-        config["button-theme"]             = find_key("str", "button", "theme",             "default-clearine")
+        config["button-theme"]             = find_key("str", "button", "theme",             "Clearine-Fallback")
         config["button-width"]             = find_key("int", "button", "width",             100)
         config["card-background-color"]    = find_key("clr", "card",   "background-color",  "#e1e5e8")
         config["card-border-radius"]       = find_key("int", "card",   "border-radius",     20)
@@ -225,7 +225,7 @@ class Clearine(Gtk.Window):
         content.pack_start(widgets, False, False, False)
         content.pack_end(container, False, False, False)
 
-        gobject.timeout_add(200, self.update_widgets)
+        GLib.timeout_add(200, self.update_widgets)
         self.card_style = Gtk.CssProvider()
         self.card_css = """
             .clearine-button {{
@@ -294,22 +294,29 @@ class Clearine(Gtk.Window):
         status = logging.getLogger(self.__class__.__name__)
         button_name = name.strip()
 
-        icon_atsystem = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, config["button-theme"])
-        icon_athome = "%s/.themes/%s/clearine" % (os.environ['HOME'], config["button-theme"])
-        icon_default = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, 'default-clearine')
+        icsyspath = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, config["button-theme"])
+        ichomepath = "%s/.themes/%s/clearine" % (os.environ['HOME'], config["button-theme"])
+        icdefpath = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, 'Clearine-Fallback')
 
-        try:
-            if os.path.exists("%s/%s.png" % (icon_athome, button_name)):
-                iconfile = "%s/%s.png" % (icon_athome, button_name)
-            if os.path.exists("%s/%s.png" % (icon_atsystem, button_name)):
-                iconfile = "%s/%s.png" % (icon_atsystem, button_name)
-            if os.path.exists("%s/%s.svg" % (icon_athome, button_name)):
-                iconfile = "%s/%s.svg" % (icon_athome, button_name)
-            if os.path.exists("%s/%s.svg" % (icon_atsystem, button_name)):
-                iconfile = "%s/%s.svg" % (icon_atsystem, button_name)
-        except:
-            status.info("icon '%s' at '%s' theme  doesn't exist.  we use fallback theme insteads." % (button_name, config["button-theme"]))
-            iconfile = "%s/%s.svg" % (icon_default, button_name)
+        icpng_athome = "%s/%s.png" % (ichomepath, button_name)
+        icpng_atsys = "%s/%s.png" % (icsyspath, button_name)
+        icsvg_athome = "%s/%s.svg" % (ichomepath, button_name)
+        icsvg_atsys = "%s/%s.svg" % (icsyspath, button_name)
+        icsvg_def = "%s/%s.svg" % (icdefpath, button_name)
+
+        if os.path.exists(icpng_athome):
+            iconfile = icpng_athome
+        elif os.path.exists(icsvg_athome):
+            iconfile = icsvg_athome
+        elif os.path.exists(icpng_atsys):
+            iconfile = icpng_atsys
+        elif os.path.exists(icsvg_atsys):
+            iconfile = icsvg_atsys
+        elif os.path.exists(icsvg_def):
+            iconfile = icsvg_def
+        else:
+            status.info("No Clearine theme available, exiting")
+            sys.exit()
 
         icon_buffer = Pixbuf.new_from_file_at_size(iconfile, config["button-icon-width"], config["button-icon-height"])
 
