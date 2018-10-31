@@ -1,7 +1,7 @@
 <div align="center">
 	<img src="https://user-images.githubusercontent.com/9277632/37465589-2095df10-288e-11e8-808c-bed8b21f762a.png" width="1024">
 	<h1>Clearine</h1>
-	<p>Yet Another GTK3-based logout-window overlay for independent windowmanager</p>
+	<p>Beautiful Logout UI for X11 window manager</p>
 	<p>Inspired from oblogout and Android Oreo's power menu</p>
 </div>
 
