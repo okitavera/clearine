@@ -1,11 +1,12 @@
 # Clearine
 
 Beautiful Logout UI for X11 window manager.
-
 Inspired from oblogout and Android Oreo's power menu.
 
 ## Preview
-![preview](https://user-images.githubusercontent.com/9277632/37465589-2095df10-288e-11e8-808c-bed8b21f762a.png)
+
+* [Horizontal mode](https://user-images.githubusercontent.com/9277632/47901195-29e2bd00-de77-11e8-8ffc-0d422161bea4.png)
+* [Vertical mode](https://user-images.githubusercontent.com/9277632/47901203-2ea77100-de77-11e8-8b85-321c7b2e8bfd.png)
 
 ## Dependencies
 
