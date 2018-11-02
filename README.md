@@ -1,10 +1,11 @@
-<div align="center">
-	<img src="https://user-images.githubusercontent.com/9277632/37465589-2095df10-288e-11e8-808c-bed8b21f762a.png" width="1024">
-	<h1>Clearine</h1>
-	<p>Beautiful Logout UI for X11 window manager</p>
-	<p>Inspired from oblogout and Android Oreo's power menu</p>
-</div>
+# Clearine
 
+Beautiful Logout UI for X11 window manager.
+
+Inspired from oblogout and Android Oreo's power menu.
+
+## Preview
+![preview](https://user-images.githubusercontent.com/9277632/37465589-2095df10-288e-11e8-808c-bed8b21f762a.png)
 
 ## Dependencies
 
@@ -48,73 +49,85 @@ if that file is unavailable, I will read from  "/etc/clearine.conf"  insteads.
 ## Configuration format
 
 The configuration format is using section-style like this :
+```
+[main]
+    # set background opacity
+    opacity = 0.8
+    # set gaps
+    gap-left = 70
+    gap-right = 70
+    gap-top = 70
+    gap-bottom = 70
+    # set mode (vertical/horizontal)
+    mode = horizontal
+    # set spacing between card and widget
+    spacing = 20
 
-     [main]
-     # set background opacity
-     opacity = 0.8
-     # set padding left and right
-     gap-left = 100
-     gap-right = 50
-     
-     [command]
-     # set command to launch when the button is clicked
-     logout = openbox --exit
-     restart = systemctl reboot
-     shutdown = systemctl poweroff
-     
-     [card]
-     # set background color and border radius for card
-     background-color = #e1e5e8
-     border-radius = 20
-     
-     [button]
-     # button theme name
-     theme = Clearine-Fallback
-     # button item sort
-     items = logout, restart, shutdown, cancel
-     # set button text font and text color
-     label-font = DejaVu Sans Book 9
-     label-size = 9
-     label-color = #101314
-     # set button width and height
-     width = 100
-     height = 70
-     # set button icon width and height
-     icon-width = 32
-     icon-height = 32
-     # set per-button margin
-     margin-bottom = 30
-     margin-left = 10
-     margin-right = 10
-     margin-top = 30
-     # set spacing between button
-     spacing = 10
-     
-     [widget]
-     # set widget first line font, size, color and format
-     firstline-font = DejaVu Sans ExtraLight
-     firstline-size = 90
-     firstline-color = #e1e5e8
-     firstline-format = %H.%M
-     # set widget second line font, size, color and format
-     secondline-font = DejaVu Sans Book
-     secondline-size = 14
-     secondline-color = #e1e5e8
-     secondline-format = %A, %d %B %Y
+[command]
+    # set command to launch when the button is clicked
+    logout = openbox --exit
+    restart = systemctl reboot
+    shutdown = systemctl poweroff
+
+[card]
+    # set background color and border radius for card
+    background-color = #e1e5e8
+    border-radius = 5
+    # set padding
+    padding-bottom = 10
+    padding-left = 10
+    padding-right = 10
+    padding-top = 10
+
+[button]
+    # button theme name
+    theme = Clearine-Fallback
+    # button item sort
+    items = logout, restart, shutdown, cancel
+    # set button text font and text color
+    label-font = DejaVu Sans Book 9
+    label-size = 9
+    label-color = #101314
+    # set button width and height
+    width = 70
+    height = 70
+    # set button icon width and height
+    icon-width = 32
+    icon-height = 32
+    # set per-button margin
+    margin-bottom = 0
+    margin-left = 0
+    margin-right = 0
+    margin-top = 0
+    # set spacing between button
+    spacing = 0
+
+[widget]
+    # set widget first line font, size, color and format
+    firstline-font = DejaVu Sans ExtraLight
+    firstline-size = 90
+    firstline-color = #e1e5e8
+    firstline-format = %H.%M
+    # set widget second line font, size, color and format
+    secondline-font = DejaVu Sans Book
+    secondline-size = 14
+    secondline-color = #e1e5e8
+    secondline-format = %A, %d %B %Y
+```
 
 For the color, you can use hex format like this :
-
-     [card]
-     background-color = #e1e5e8
-
+```
+[card]
+    background-color = #e1e5e8
+```
 or you can get color from your X resources, by using format like this:
+```
+[card]
+    background-color = {background}
 
-     [card]
-     background-color = {background}
-     
-     [widget]
-     firstline-color = {color6}
-
+[widget]
+    firstline-color = {color6}
+```
 
 ## Themes
 

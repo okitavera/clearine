@@ -12,64 +12,6 @@ usage:
    Clearine basically read configuration from  "~/.config/clearine.conf"  .
    if that file is unavailable, I will read from  "/etc/clearine.conf"  insteads.
 
- configuration format:
-
-   [main]
-     # set background opacity
-     opacity = 0.8
-     # set padding left and right
-     gap-left = 100
-     gap-right = 50
-
-   [command]
-     # set command to launch when the button is clicked
-     logout = openbox --exit
-     restart = systemctl reboot
-     shutdown = systemctl poweroff
-
-   [card]
-     # set background color and border radius for card
-     background-color = #e1e5e8
-     border-radius = 20
-
-   [button]
-     # button theme name
-     theme = Clearine-Fallback
-     # button item sort
-     items = logout, restart, shutdown, cancel
-     # set button text font and text color
-     label-font = DejaVu Sans Book 9
-     label-size = 9
-     label-color = #101314
-     # set button width and height
-     width = 100
-     height = 70
-     # set button icon width and height
-     icon-width = 32
-     icon-height = 32
-     # set per-button margin
-     margin-bottom = 30
-     margin-left = 10
-     margin-right = 10
-     margin-top = 30
-     # set spacing between button
-     spacing = 10
-
-   [widget]
-     # set widget first line font, size, color and format
-     firstline-font = DejaVu Sans ExtraLight
-     firstline-size = 90
-     firstline-color = #e1e5e8
-     firstline-format = %H.%M
-     # set widget second line font, size, color and format
-     secondline-font = DejaVu Sans Book
-     secondline-size = 14
-     secondline-color = #e1e5e8
-     secondline-format = %A, %d %B %Y
-
-author  - Nanda Vera <codeharuka.yusa@gmail.com> 
-source  - https://github.com/yuune/clearine
-license - MIT [see LICENSE file for more]
 """
 
 import os
@@ -176,8 +118,16 @@ class Clearine(Gtk.Window):
         config["button-width"]             = find_key("int", "button", "width",             100)
         config["card-background-color"]    = find_key("clr", "card",   "background-color",  "#e1e5e8")
         config["card-border-radius"]       = find_key("int", "card",   "border-radius",     20)
-        config["main-gap-left"]            = find_key("int", "main",   "gap-left",          100)
+        config["card-padding-bottom"]      = find_key("int", "card",   "padding-bottom",    10)
+        config["card-padding-left"]        = find_key("int", "card",   "padding-left",      10)
+        config["card-padding-right"]       = find_key("int", "card",   "padding-right",     10)
+        config["card-padding-top"]         = find_key("int", "card",   "padding-top",       10)
+        config["main-mode"]                = find_key("str", "main",   "mode",              "V")
+        config["main-spacing"]             = find_key("int", "main",   "spacing",           10)
+        config["main-gap-left"]            = find_key("int", "main",   "gap-left",          50)
         config["main-gap-right"]           = find_key("int", "main",   "gap-right",         50)
+        config["main-gap-top"]             = find_key("int", "main",   "gap-top",           50)
+        config["main-gap-bottom"]          = find_key("int", "main",   "gap-bottom",        50)
         config["main-opacity"]             = find_key("flo", "main",   "opacity",           0.8)
         config["widget-firstline-font"]    = find_key("str", "widget", "firstline-font",    "DejaVu Sans ExtraLight")
         config["widget-firstline-size"]    = find_key("int", "widget", "firstline-size",    90)
@@ -193,19 +143,37 @@ class Clearine(Gtk.Window):
 
     def realize_content(self):
         # Setup all content inside Gtk.Window
-        button_group = Gtk.VBox()
+        if config["main-mode"] == "horizontal":
+            button_group = Gtk.VBox()
+            content = Gtk.HBox()
+        else:
+            button_group = Gtk.HBox()
+            content = Gtk.VBox()
+
         button_group.set_margin_top(config["button-margin-top"])
         button_group.set_margin_start(config["button-margin-left"])
         button_group.set_margin_bottom(config["button-margin-bottom"])
         button_group.set_margin_end(config["button-margin-right"])
         button_group.set_spacing(config["button-spacing"])
 
-        card = Gtk.VBox()
-        card.pack_end(button_group, False, False, False)
+        card_container = Gtk.Box()
+        card_container.set_margin_top(config["card-padding-top"])
+        card_container.set_margin_start(config["card-padding-left"])
+        card_container.set_margin_bottom(config["card-padding-bottom"])
+        card_container.set_margin_end(config["card-padding-right"])
+        card_container.pack_start(button_group, False, False, False)
+
+        card = Gtk.Box()
+        card.pack_start(card_container, False, False, False)
 
         container = Gtk.Grid()
-        container.set_halign(Gtk.Align.END)
-        container.set_valign(Gtk.Align.CENTER)
+        if config["main-mode"] == "horizontal":
+            container.set_halign(Gtk.Align.END)
+            container.set_valign(Gtk.Align.CENTER)
+        else:
+            container.set_halign(Gtk.Align.CENTER)
+            container.set_valign(Gtk.Align.START)
+
         container.attach(card, 1, 1, 1, 1)
 
         self.first_widget = Gtk.Label()
@@ -215,15 +183,23 @@ class Clearine(Gtk.Window):
         self.second_widget.set_label(time.strftime(config["widget-secondline-format"]))
 
         widgets = Gtk.Grid()
-        widgets.set_valign(Gtk.Align.CENTER)
+        if config["main-mode"] == "horizontal":
+            widgets.set_halign(Gtk.Align.START)
+            widgets.set_valign(Gtk.Align.CENTER)
+        else:
+            widgets.set_halign(Gtk.Align.CENTER)
+            widgets.set_valign(Gtk.Align.END)
+
         widgets.attach(self.first_widget, 1, 1, 1, 1)
         widgets.attach(self.second_widget, 1, 2, 1, 1)
 
-        content = Gtk.Box()
         content.set_margin_start(config["main-gap-left"])
         content.set_margin_end(config["main-gap-right"])
-        content.pack_start(widgets, False, False, False)
-        content.pack_end(container, False, False, False)
+        content.set_margin_top(config["main-gap-top"])
+        content.set_margin_bottom(config["main-gap-bottom"])
+        content.set_spacing(config["main-spacing"])
+        content.pack_start(widgets, True, True, 0)
+        content.pack_end(container, True, True, 0)
 
         GLib.timeout_add(200, self.update_widgets)
         self.card_style = Gtk.CssProvider()
