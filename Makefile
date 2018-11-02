@@ -7,7 +7,6 @@ install:
 	install -d $(DESTDIR)$(PREFIX)/bin
 	install -d $(DESTDIR)/etc
 	install -d $(DESTDIR)$(PREFIX)/share/themes/Clearine-Fallback/clearine
-	sh data/genconfig
 	install -m 644 data/clearine.conf $(DESTDIR)/etc/
 	install -m 644 data/theme-default/*.svg $(DESTDIR)$(PREFIX)/share/themes/Clearine-Fallback/clearine/
 	install -m 755 clearine.py $(DESTDIR)$(PREFIX)/bin/clearine
