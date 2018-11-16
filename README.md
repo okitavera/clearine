@@ -102,6 +102,9 @@ The configuration format is using section-style like this :
     margin-top = 0
     # set spacing between button
     spacing = 0
+    # opacity
+    opacity-normal = 0.7
+    opacity-focus = 1.0
 
 [widget]
     # set widget first line font, size, color and format

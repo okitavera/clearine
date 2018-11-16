@@ -116,6 +116,8 @@ class Clearine(Gtk.Window):
         config["button-spacing"]           = find_key("int", "button", "spacing",           10)
         config["button-theme"]             = find_key("str", "button", "theme",             "Clearine-Fallback")
         config["button-width"]             = find_key("int", "button", "width",             100)
+        config["button-opacity-normal"]    = find_key("flo", "button", "opacity-normal",    0.7)
+        config["button-opacity-focus"]     = find_key("flo", "button", "opacity-focus",     1.0)
         config["card-background-color"]    = find_key("clr", "card",   "background-color",  "#e1e5e8")
         config["card-border-radius"]       = find_key("int", "card",   "border-radius",     20)
         config["card-padding-bottom"]      = find_key("int", "card",   "padding-bottom",    10)
@@ -210,6 +212,10 @@ class Clearine(Gtk.Window):
                 font-family: '{_bfont}';
                 font-size: {_bsize}px;
                 box-shadow: none;
+                opacity: {_bopa};
+            }}
+            .clearine-button:focused {{
+                opacity: {_bopaf};
             }}
             .clearine-card {{
                 background: {_cbg};
@@ -230,6 +236,8 @@ class Clearine(Gtk.Window):
                 _bsize=str(config["button-label-size"]),
                 _bcol=str(config["button-label-color"]),
                 _bfont=str(config["button-label-font"]),
+                _bopa=str(config["button-opacity-normal"]),
+                _bopaf=str(config["button-opacity-focus"]),
                 _cbg=str(config["card-background-color"]),
                 _crad=str(config["card-border-radius"]),
                 _w1col=str(config["widget-firstline-color"]),
