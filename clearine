@@ -266,7 +266,10 @@ class Clearine(Gtk.Window):
 
             self.draw_button(button, button_group, count)        
 
-        self.add(content)
+        body = Gtk.EventBox()
+        body.add(content)
+        body.connect('button-press-event', Gtk.main_quit)
+        self.add(body)
 
     def update_widgets(self):
         # update first and second-line widget
