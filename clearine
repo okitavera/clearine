@@ -214,7 +214,7 @@ class Clearine(Gtk.Window):
                 box-shadow: none;
                 opacity: {_bopa};
             }}
-            .clearine-button:focused {{
+            .clearine-button:focus {{
                 opacity: {_bopaf};
             }}
             .clearine-card {{
