@@ -8,8 +8,8 @@ install:
 	install -d $(DESTDIR)/etc
 	install -d $(DESTDIR)$(PREFIX)/share/themes/Clearine-Fallback/clearine
 	install -m 644 data/clearine.conf $(DESTDIR)/etc/
-	install -m 644 data/theme-default/*.svg $(DESTDIR)$(PREFIX)/share/themes/Clearine-Fallback/clearine/
-	install -m 755 clearine.py $(DESTDIR)$(PREFIX)/bin/clearine
+	install -m 644 data/*.svg $(DESTDIR)$(PREFIX)/share/themes/Clearine-Fallback/clearine/
+	install -m 755 clearine $(DESTDIR)$(PREFIX)/bin/clearine
 
 .PHONY: uninstall
 uninstall:

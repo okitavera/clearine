@@ -135,14 +135,15 @@ or you can get color from your X resources, by using format like this:
 
 ## Themes
 
-You can use the png or svg for the icon button
+You can use the png or svg for the icon button.
+
 See `/usr/share/themes/Clearine-Fallback` for example
 
 
 ## Credits
 
 * [Google Material Design Icon Family](https://google.github.io/material-design-icons/)
-* [@fikriomar26](https://github.com/fikriomar16) for the 768px screen configs.
+* [@fikriomar26](https://github.com/fikriomar16)
 
 ## License
 
