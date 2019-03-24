@@ -213,13 +213,15 @@ class Clearine(Gtk.Window):
                 font-size: {_bsize}px;
                 box-shadow: none;
                 opacity: {_bopa};
+                border-width: 0;
             }}
             .clearine-button:focus {{
                 opacity: {_bopaf};
+                border-width: 0;
             }}
             .clearine-card {{
                 background: {_cbg};
-                border-width:0;
+                border-width: 0;
                 border-radius:{_crad}px;
             }}
             .clearine-widget-first {{
