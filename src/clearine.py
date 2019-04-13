@@ -57,11 +57,11 @@ class Clearine(Gtk.Window):
         self.connect('key-press-event', self.on_keypressed)
         self.set_visual(self.get_screen().get_rgba_visual())
         self.set_app_paintable(True)
-        self.fullscreen()
         self.fetch_dotconf()
         self.realize_content()
         self.show_all()
         self.set_keep_above(True)
+        self.fullscreen()
 
     def fetch_dotconf(self):
         # fetch a plain-text clearine.conf configuration
