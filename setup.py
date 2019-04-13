@@ -16,7 +16,7 @@ print(data_files)
 
 setup(
     name = "Clearine",
-    version = "0.0.1",
+    version = "0.6",
     author = "Nanda Okitavera",
     author_email = "codeharuka.yusa@gmail.com",
     description = ("Beautiful Logout UI for X11 window manager"),
