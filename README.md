@@ -26,6 +26,7 @@ For Void user :
     $ sudo xbps-install -S clearine
 
 ---
+## Install from source
 
 Install the dependencies first:
 
@@ -49,7 +50,7 @@ if you not using pip, you can run setup.py directly:
 ## Configuration file
 
 Clearine basically read configuration from  "~/.config/clearine.conf"  .
-if that file is unavailable, I will read from  "/etc/clearine.conf"  insteads.
+if that file is unavailable, clearine will read from  "/etc/clearine.conf" or "/usr/share/clearine/clearine.conf" insteads.
 
 
 ## Configuration format
