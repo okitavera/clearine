@@ -42,7 +42,8 @@ gi.require_version('Gdk', '3.0')
 
 from gi.repository import Gtk, Gdk, Pango, GLib
 from gi.repository.GdkPixbuf import Pixbuf
-
+from Clearine.helper import SignalHandler
+from Clearine.helper import Helper
 config = {}
 
 class Clearine(Gtk.Window):
@@ -70,17 +71,24 @@ class Clearine(Gtk.Window):
         dotcat = configparser.ConfigParser()
         file_home = "%s/.config/clearine.conf" % os.environ['HOME']
         file_sys = "/etc/clearine.conf"
+        file_default = "/usr/share/clearine/clearine.conf"
 
         try:
             if os.path.exists(file_home):
+                status.info("load config from: %s"% (file_home))
                 dotcat.read(file_home)
             elif os.path.exists(file_sys):
+                status.info("load config from: %s"% (file_sys))
                 dotcat.read(file_sys)
+            elif os.path.exists(file_default):
+                status.info("load config from: %s"% (file_default))
+                dotcat.read(file_default)
         except:
             status.error("failed to find configuration file.  exiting.")
             sys.exit()
 
         def find_key(data, section, key, default):
+            helper = Helper()
             try:
                 if data is "arr":
                     return dotcat.get(section, key).split(",")
@@ -96,7 +104,7 @@ class Clearine(Gtk.Window):
                         return data
                     elif data.startswith("{") and data.endswith("}"):
                         data = data.lstrip('{').rstrip('}')
-                        return self.xrdb(data)
+                        return helper.xrdb(data)
 
             except:
                 status.info("failed to find key named '%s' in section '[%s]'.  use fallback value insteads." % (key, section))
@@ -266,7 +274,7 @@ class Clearine(Gtk.Window):
             except NameError:
                 count = 1
 
-            self.draw_button(button, button_group, count)        
+            self.draw_button(button, button_group, count)
 
         body = Gtk.EventBox()
         body.add(content)
@@ -327,23 +335,6 @@ class Clearine(Gtk.Window):
         Gtk.StyleContext.add_provider(button.get_style_context(), self.card_style, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         widget.pack_start(button, False, False, False)
 
-    def to_rgba(self, hex):
-        # convert hex color to RGBA
-        color = Gdk.RGBA()
-        color.parse(hex)
-        return color 
-
-    def xrdb(self, request):
-        result = {}
-        query = subprocess.Popen(['xrdb', '-query'],stdout=subprocess.PIPE)
-        for line in iter(query.stdout.readline, b''):
-            lined = line.decode()
-            key, value, *_ = lined.split(':')
-            key = key.lstrip('*').lstrip('.')
-            value = value.strip()
-            result[key] = value
-
-        return result[request]
 
     def draw_background(self, widget, context):
         # setup a semi-transparent background
@@ -364,20 +355,13 @@ class Clearine(Gtk.Window):
         if event.keyval == Gdk.KEY_Escape:
             sys.exit()
 
-class SignalHandler():
-    def __init__(self):
-        self.SIGINT = False
-
-    def SIGINT(self, signal, fram):
-        self.SIGINT = True
-
 def main():
     status_format = logging.StreamHandler(sys.stdout)
     status_format.setFormatter(logging.Formatter("Clearine: %(message)s"))
     status = logging.getLogger()
     status.addHandler(status_format)
     status.setLevel(logging.INFO)
-    
+
     try:
         if len(sys.argv) > 1:
             options, arguments = getopt.getopt(sys.argv[1:], "h", ["help"])
@@ -388,9 +372,6 @@ def main():
     except:
         status.error("unused options '%s'.  see -h (or --help) for more information" % sys.argv[1])
         return 2
-
-
-
 
     handle = SignalHandler()
     signal.signal(signal.SIGINT, handle.SIGINT)

@@ -36,9 +36,14 @@ clone this repo into your local storage:
     $ git clone https://github.com/yuune/clearine.git
     $ cd clearine
 
-then install via this command:
+then install via pip:
 
-    $ sudo make install
+    $ pip install .
+
+if you not using pip, you can run setup.py directly:
+
+    $ python3 setup.py install --prefix=/usr --root="/" --optimize=1 --skip-build
+
 
 
 ## Configuration file
