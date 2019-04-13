@@ -44,8 +44,9 @@ from gi.repository import Gtk, Gdk, Pango, GLib
 from gi.repository.GdkPixbuf import Pixbuf
 from Clearine.helper import SignalHandler
 from Clearine.helper import Helper
-config = {}
 
+config = {}
+root_module = os.path.dirname(os.path.abspath(__file__))
 class Clearine(Gtk.Window):
     def __init__(self):
         # initialize a fullscreen window
@@ -69,17 +70,22 @@ class Clearine(Gtk.Window):
 
         status = logging.getLogger(self.__class__.__name__)
         dotcat = configparser.ConfigParser()
+
         file_home = "%s/.config/clearine.conf" % os.environ['HOME']
-        file_sys = "/etc/clearine.conf"
-        file_default = "/usr/share/clearine/clearine.conf"
+        file_etc = "/etc/clearine.conf"
+        file_share = "/usr/share/clearine/clearine.conf"
+        file_default = "%s/data/clearine.conf" % root_module
 
         try:
             if os.path.exists(file_home):
                 status.info("load config from: %s"% (file_home))
                 dotcat.read(file_home)
-            elif os.path.exists(file_sys):
-                status.info("load config from: %s"% (file_sys))
-                dotcat.read(file_sys)
+            elif os.path.exists(file_etc):
+                status.info("load config from: %s"% (file_etc))
+                dotcat.read(file_etc)
+            elif os.path.exists(file_share):
+                status.info("load config from: %s"% (file_share))
+                dotcat.read(file_share)
             elif os.path.exists(file_default):
                 status.info("load config from: %s"% (file_default))
                 dotcat.read(file_default)
@@ -291,26 +297,30 @@ class Clearine(Gtk.Window):
         status = logging.getLogger(self.__class__.__name__)
         button_name = name.strip()
 
-        icsyspath = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, config["button-theme"])
-        ichomepath = "%s/.themes/%s/clearine" % (os.environ['HOME'], config["button-theme"])
-        icdefpath = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, 'Clearine-Fallback')
+        dir_ic_home = "%s/.themes/%s/clearine" % (os.environ['HOME'], config["button-theme"])
+        dir_ic_share = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, config["button-theme"])
+        dir_ic_share_fb = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, 'Clearine-Fallback')
+        dir_ic_default = "%s/data" % root_module
 
-        icpng_athome = "%s/%s.png" % (ichomepath, button_name)
-        icpng_atsys = "%s/%s.png" % (icsyspath, button_name)
-        icsvg_athome = "%s/%s.svg" % (ichomepath, button_name)
-        icsvg_atsys = "%s/%s.svg" % (icsyspath, button_name)
-        icsvg_def = "%s/%s.svg" % (icdefpath, button_name)
+        ic_png_home = "%s/%s.png" % (dir_ic_home, button_name)
+        ic_png_share = "%s/%s.png" % (dir_ic_share, button_name)
+        ic_svg_home = "%s/%s.svg" % (dir_ic_home, button_name)
+        ic_svg_share = "%s/%s.svg" % (dir_ic_share, button_name)
+        ic_svg_share_fb = "%s/%s.svg" % (dir_ic_share_fb, button_name)
+        ic_svg_default = "%s/%s.svg" % (dir_ic_default, button_name)
 
-        if os.path.exists(icpng_athome):
-            iconfile = icpng_athome
-        elif os.path.exists(icsvg_athome):
-            iconfile = icsvg_athome
-        elif os.path.exists(icpng_atsys):
-            iconfile = icpng_atsys
-        elif os.path.exists(icsvg_atsys):
-            iconfile = icsvg_atsys
-        elif os.path.exists(icsvg_def):
-            iconfile = icsvg_def
+        if os.path.exists(ic_png_home):
+            iconfile = ic_png_home
+        elif os.path.exists(ic_svg_home):
+            iconfile = ic_svg_home
+        elif os.path.exists(ic_png_share):
+            iconfile = ic_png_share
+        elif os.path.exists(ic_svg_share):
+            iconfile = ic_svg_share
+        elif os.path.exists(ic_svg_share_fb):
+            iconfile = ic_svg_share_fb
+        elif os.path.exists(ic_svg_default):
+            iconfile = ic_svg_default
         else:
             status.info("No Clearine theme available, exiting")
             sys.exit()

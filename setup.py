@@ -23,6 +23,7 @@ setup(
     license = "MIT",
     packages = ["Clearine"],
     package_dir = {"Clearine":  "src"},
+    package_data = {"Clearine": ["data/*"]},
     data_files=data_files,
     zip_safe=False,
     url = "https://github.com/okitavera/clearine",
