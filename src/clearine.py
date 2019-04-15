@@ -49,22 +49,27 @@ config = {}
 root_module = os.path.dirname(os.path.abspath(__file__))
 class Clearine(Gtk.Window):
     def __init__(self):
+        super(Clearine, self).__init__()
         # initialize a fullscreen window
-        Gtk.Window.__init__(self)
+        self.setcontent()
+        self.setprops()
+
+    def setprops(self):
+        self.set_visual(self.get_screen().get_rgba_visual())
+        self.set_app_paintable(True)
+
+        self.fullscreen()
+        self.set_skip_pager_hint(True)
+        self.set_keep_above(True)
+        self.realize()
 
         self.connect('destroy', Gtk.main_quit)
         self.connect('draw', self.draw_background)
-        self.connect("delete-event", Gtk.main_quit)
+        self.connect('delete-event', Gtk.main_quit)
         self.connect('key-press-event', self.on_keypressed)
-        self.set_visual(self.get_screen().get_rgba_visual())
-        self.set_app_paintable(True)
-        self.fetch_dotconf()
-        self.realize_content()
-        self.show_all()
-        self.set_keep_above(True)
-        self.fullscreen()
+        self.connect('window-state-event', self.on_state_changed)
 
-    def fetch_dotconf(self):
+    def setcontent(self):
         # fetch a plain-text clearine.conf configuration
         global config
 
@@ -106,7 +111,7 @@ class Clearine(Gtk.Window):
                     return dotcat.getfloat(section, key)
                 if data is "clr":
                     data = dotcat.get(section, key, raw=True)
-                    if data.startswith("#"):
+                    if data.startswith("#") or data.startswith("rgba("):
                         return data
                     elif data.startswith("{") and data.endswith("}"):
                         data = data.lstrip('{').rstrip('}')
@@ -157,7 +162,6 @@ class Clearine(Gtk.Window):
         config["command-restart"]          = find_key("str", "command", "restart",          "pkexec reboot -h now")
         config["command-shutdown"]         = find_key("str", "command", "shutdown",         "pkexec shutdown -h now")
 
-    def realize_content(self):
         # Setup all content inside Gtk.Window
         if config["main-mode"] == "horizontal":
             button_group = Gtk.VBox()
@@ -364,6 +368,9 @@ class Clearine(Gtk.Window):
         # handling an event when user press some key
         if event.keyval == Gdk.KEY_Escape:
             sys.exit()
+    def on_state_changed(self, widget, event):
+         if event.new_window_state:
+            self.fullscreen()
 
 def main():
     status_format = logging.StreamHandler(sys.stdout)
@@ -385,8 +392,8 @@ def main():
 
     handle = SignalHandler()
     signal.signal(signal.SIGINT, handle.SIGINT)
-
-    Clearine()
+    w = Clearine()
+    w.show_all()
     Gtk.main()
 
 if __name__ == "__main__":
