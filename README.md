@@ -43,7 +43,7 @@ then install via pip:
 
 if you not using pip, you can run setup.py directly:
 
-    $ python3 setup.py install --prefix=/usr --root="/" --optimize=1 --skip-build
+    $ python3 setup.py install --prefix=/usr --root="/" --optimize=1
 
 
 
