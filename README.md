@@ -73,6 +73,7 @@ The configuration format is using section-style like this :
 [command]
     # set command to launch when the button is clicked
     logout = openbox --exit
+    lock = i3lock
     restart = systemctl reboot
     shutdown = systemctl poweroff
 
@@ -90,7 +91,7 @@ The configuration format is using section-style like this :
     # button theme name
     theme = Clearine-Fallback
     # button item sort
-    items = logout, restart, shutdown, cancel
+    items = logout, lock, restart, shutdown, cancel
     # set button text font and text color
     label-font = DejaVu Sans Book 9
     label-size = 9

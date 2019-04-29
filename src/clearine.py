@@ -127,7 +127,7 @@ class Clearine(Gtk.Window):
         config["button-height"]            = find_key("int", "button", "height",            70)
         config["button-icon-height"]       = find_key("int", "button", "icon-height",       32)
         config["button-icon-width"]        = find_key("int", "button", "icon-width",        32)
-        config["button-items"]             = find_key("arr", "button", "items",             "logout, restart, shutdown, cancel")
+        config["button-items"]             = find_key("arr", "button", "items",             "logout, lock, restart, shutdown, cancel")
         config["button-margin-bottom"]     = find_key("int", "button", "margin-bottom",     30)
         config["button-margin-left"]       = find_key("int", "button", "margin-left",       10)
         config["button-margin-right"]      = find_key("int", "button", "margin-right",      10)
@@ -161,6 +161,7 @@ class Clearine(Gtk.Window):
         config["command-logout"]           = find_key("str", "command", "logout",           "pkexec pkill X")
         config["command-restart"]          = find_key("str", "command", "restart",          "pkexec reboot -h now")
         config["command-shutdown"]         = find_key("str", "command", "shutdown",         "pkexec shutdown -h now")
+        config["command-lock"]             = find_key("str", "command", "lock",             "i3lock")
 
         # Setup all content inside Gtk.Window
         if config["main-mode"] == "horizontal":
