@@ -79,12 +79,16 @@ class Clearine(Gtk.Window):
         file_home = "%s/.config/clearine.conf" % os.environ['HOME']
         file_etc = "/etc/clearine.conf"
         file_share = "/usr/share/clearine/clearine.conf"
+        file_dot_config = "%s/.config/clearine/clearine.conf" % os.environ['HOME']
         file_default = "%s/data/clearine.conf" % root_module
 
         try:
             if os.path.exists(file_home):
                 status.info("load config from: %s"% (file_home))
                 dotcat.read(file_home)
+            elif os.path.exists(file_dot_config):
+                status.info("load config from: %s"% (file_dot_config))
+                dotcat.read(file_dot_config)
             elif os.path.exists(file_etc):
                 status.info("load config from: %s"% (file_etc))
                 dotcat.read(file_etc)
@@ -399,3 +403,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
