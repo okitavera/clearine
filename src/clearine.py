@@ -46,6 +46,7 @@ from Clearine.helper import SignalHandler
 from Clearine.helper import Helper
 
 config = {}
+shortcuts = {}
 root_module = os.path.dirname(os.path.abspath(__file__))
 class Clearine(Gtk.Window):
     def __init__(self):
@@ -72,6 +73,7 @@ class Clearine(Gtk.Window):
     def setcontent(self):
         # fetch a plain-text clearine.conf configuration
         global config
+        global shortcuts
 
         status = logging.getLogger(self.__class__.__name__)
         dotcat = configparser.ConfigParser()
@@ -166,6 +168,14 @@ class Clearine(Gtk.Window):
         config["command-restart"]          = find_key("str", "command", "restart",          "pkexec reboot -h now")
         config["command-shutdown"]         = find_key("str", "command", "shutdown",         "pkexec shutdown -h now")
         config["command-lock"]             = find_key("str", "command", "lock",             "i3lock")
+
+        shortcuts = {
+            find_key("str", "shortcuts", "cancel", "Escape"):   "cancel",
+            find_key("str", "shortcuts", "lock", "K"):          "lock",
+            find_key("str", "shortcuts", "logout", "L"):        "logout",
+            find_key("str", "shortcuts", "restart", "R"):       "restart",
+            find_key("str", "shortcuts", "shutdown", "S"):      "shutdown"
+        }
 
         # Setup all content inside Gtk.Window
         if config["main-mode"] == "horizontal":
@@ -371,8 +381,15 @@ class Clearine(Gtk.Window):
 
     def on_keypressed (self, widget, event):
         # handling an event when user press some key
-        if event.keyval == Gdk.KEY_Escape:
-            sys.exit()
+        key = Gdk.keyval_name(event.keyval)
+
+        if key in shortcuts.keys():
+            command = shortcuts[key]
+            if command == "cancel":
+                sys.exit()
+            else:
+                os.system(config["command-%s" % command])
+
     def on_state_changed(self, widget, event):
          if event.new_window_state:
             self.fullscreen()
