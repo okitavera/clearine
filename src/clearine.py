@@ -133,7 +133,7 @@ class Clearine(Gtk.Window):
         config["button-height"]            = find_key("int", "button", "height",            70)
         config["button-icon-height"]       = find_key("int", "button", "icon-height",       32)
         config["button-icon-width"]        = find_key("int", "button", "icon-width",        32)
-        config["button-items"]             = find_key("arr", "button", "items",             "logout, lock, restart, shutdown, cancel")
+        config["button-items"]             = find_key("arr", "button", "items",             "suspend, logout, lock, hibernate, restart, shutdown, cancel")
         config["button-margin-bottom"]     = find_key("int", "button", "margin-bottom",     30)
         config["button-margin-left"]       = find_key("int", "button", "margin-left",       10)
         config["button-margin-right"]      = find_key("int", "button", "margin-right",      10)
@@ -168,10 +168,14 @@ class Clearine(Gtk.Window):
         config["command-restart"]          = find_key("str", "command", "restart",          "pkexec reboot -h now")
         config["command-shutdown"]         = find_key("str", "command", "shutdown",         "pkexec shutdown -h now")
         config["command-lock"]             = find_key("str", "command", "lock",             "i3lock")
+        config["command-suspend"]          = find_key("str", "command", "suspend",          "systemctl suspend")
+        config["command-hibernate"]        = find_key("str", "command", "hibernate",          "systemctl hibernate")
 
         shortcuts = {
             find_key("str", "shortcuts", "cancel", "Escape"):   "cancel",
             find_key("str", "shortcuts", "lock", "K"):          "lock",
+            find_key("str", "shortcuts", "suspend", "P"):       "suspend",
+            find_key("str", "shortcuts", "hibernate", "H"):     "hibernate",
             find_key("str", "shortcuts", "logout", "L"):        "logout",
             find_key("str", "shortcuts", "restart", "R"):       "restart",
             find_key("str", "shortcuts", "shutdown", "S"):      "shutdown"
@@ -320,6 +324,7 @@ class Clearine(Gtk.Window):
         dir_ic_share = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, config["button-theme"])
         dir_ic_share_fb = "%s/%s/clearine" % ("%s/share/themes" % sys.prefix, 'Clearine-Fallback')
         dir_ic_default = "%s/data" % root_module
+        print(dir_ic_share)
 
         ic_png_home = "%s/%s.png" % (dir_ic_home, button_name)
         ic_png_share = "%s/%s.png" % (dir_ic_share, button_name)
