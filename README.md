@@ -76,6 +76,15 @@ The configuration format is using section-style like this :
     lock = i3lock
     restart = systemctl reboot
     shutdown = systemctl poweroff
+    
+[shortcuts]
+    cancel = Escape
+    lock = K
+    suspend = P
+    hibernate = H
+    logout = L
+    restart = R
+    shutdown = S
 
 [card]
     # set background color and border radius for card
