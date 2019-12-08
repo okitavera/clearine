@@ -1,5 +1,16 @@
 import os
 from setuptools import setup
+from subprocess import Popen, PIPE
+
+def git_tag():
+    try:
+        cmd = ['git', 'describe', '--tags', '--abbrev=0']
+        proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
+        proc.stderr.close()
+        return proc.stdout.readlines()[0].strip().decode()
+
+    except:
+        return "0.1"
 
 data_files = []
 dest_theme = "share/themes/Clearine-Fallback/clearine"
@@ -16,7 +27,7 @@ print(data_files)
 
 setup(
     name = "Clearine",
-    version = "0.6",
+    version = git_tag(),
     author = "Nanda Okitavera",
     author_email = "codeharuka.yusa@gmail.com",
     description = ("Beautiful Logout UI for X11 window manager"),
